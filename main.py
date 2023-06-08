@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from scrape import scrapeCompareRaja, scrapeDetailPage
+from predict import predictReview
 
 load_dotenv()
 
@@ -88,6 +89,13 @@ def addReview():
             'reviewsCount': 1
         })
     return jsonify({'message': 'success'})
+
+
+@app.route('/api/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    stars = predictReview(data['comment'])
+    return jsonify({'stars': stars})
 
 # ---------------------logos---------------------
 
